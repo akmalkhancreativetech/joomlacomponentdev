@@ -11,12 +11,12 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * HTML View class for the HelloWorld Component
+ * HelloWorlds View
  *
  * @since  0.0.1
  */
 
- class HelloWorldViewHelloWorld extends JViewLegacy
+ class HelloWorldViewHelloWorlds extends JViewLegacy
  {
      /**
 	 * Display the Hello World view
@@ -25,17 +25,21 @@ defined('_JEXEC') or die('Restricted access');
 	 *
 	 * @return  void
 	 */
+    function display($tpl = null)
+    {
+        // Get data from the model
+        $this->items = $this->get('Items');
+        $this->pagination = $this->get('Pagination');
 
-     function display($tpl = null)
-     {
-         // Assign data to the view
-         $this->msg = $this->get('Msg');
+        // Check for errors.
+        if (count($errors = $this->get('Errors')))
+		{
+			JError::raiseError(500, implode('<br />', $errors));
 
-         // Check for errors.
-         if ( count($errors = $this->get('Errors')) ) {
-             JLog::add(implode('<br />', $errors), JLog::WARNING, 'jerror');
-             return false;
-         }
-         parent::display($tpl);
-     }
+			return false;
+        }
+        
+        // Display the template
+		parent::display($tpl);
+    }
  }
