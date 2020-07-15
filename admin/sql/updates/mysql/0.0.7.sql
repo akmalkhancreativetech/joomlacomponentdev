@@ -15,6 +15,8 @@ CREATE TABLE `#__helloworld` (
 	DEFAULT CHARSET =utf8mb4;
 
 INSERT INTO `#__helloworld` (`title`) VALUES
+('Hello World'),
+('GoodBye World'),
 ('HW3'),
 ('HW4'),
 ('HW5'),
