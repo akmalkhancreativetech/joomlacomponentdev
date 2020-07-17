@@ -49,15 +49,20 @@ class HelloWorldModelHelloWorlds extends JModelList
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
 
-        // Create the base select statement.
-        $query->select('*')->from($db->quoteName('#__helloworld'));
+		// Create the base select statement.
+		$query->select('a.id as id, a.title as title, a.published as published, number, email, date')
+			  ->from($db->quoteName('#__helloworld', 'a'));
+
+		// Join over the categories.
+		$query->select($db->quoteName('c.title', 'category_title'))
+			->join('LEFT', $db->quoteName('#__categories', 'c') . ' ON c.id = a.catid');
         // Filter: like / search
 		$search = $this->getState('filter.search');
 
 		if (!empty($search))
 		{
 			$like = $db->quote('%' . $search . '%');
-			$query->where('title LIKE ' . $like);
+			$query->where('a.title LIKE ' . $like);
 		}
 
 		// Filter by published state
@@ -65,15 +70,15 @@ class HelloWorldModelHelloWorlds extends JModelList
 
 		if (is_numeric($published))
 		{
-			$query->where('published = ' . (int) $published);
+			$query->where('a.published = ' . (int) $published);
 		}
 		elseif ($published === '')
 		{
-			$query->where('(published IN (0, 1))');
+			$query->where('(a.published IN (0, 1))');
 		}
 
 		// Add the list ordering clause.
-		$orderCol	= $this->state->get('list.ordering', 'title');
+		$orderCol	= $this->state->get('list.ordering', 'a.title');
 		$orderDirn 	= $this->state->get('list.direction', 'asc');
 
 		$query->order($db->escape($orderCol) . ' ' . $db->escape($orderDirn));

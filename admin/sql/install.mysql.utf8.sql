@@ -4,6 +4,8 @@ CREATE TABLE `#__helloworld` (
 	`id`       INT(11)     NOT NULL AUTO_INCREMENT,
 	`title` VARCHAR(255) NOT NULL,
 	`published` tinyint(4) NOT NULL DEFAULT '1',
+	`catid`	    int(11)    NOT NULL DEFAULT '0',
+	`params`   VARCHAR(1024) NOT NULL DEFAULT '',
 	PRIMARY KEY (`id`)
 )
 	ENGINE =InnoDB

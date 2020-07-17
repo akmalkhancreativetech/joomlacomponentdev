@@ -37,15 +37,19 @@ JFormHelper::loadFieldClass('list');
      {
          $db = JFactory::getDBO();
          $query = $db->getQuery(true);
-         $query->select('id, title');
-         $query->from('#__helloworld');
+         $query->select('a.id as id,a.title as title, c.title as category , a.catid');
+         //  $query->select('id, title, number, email, date');
+          $query->from('#__helloworld a');
+          $query->leftJoin('#__categories c on a.catid = c.id');
+          // Retrieve only published items
+          $query->where('a.published = 1');
          $db->setQuery((string) $query);
          $messages = $db->loadObjectList();
          $options = array();
 
          if ($messages) {
              foreach ($messages as $message) {
-                 $options[] = JHtml::_('select.option', $message->id, $message->title);
+                 $options[] = JHtml::_('select.option', $message->id, $message->title . ($message->catid ? ' (' . $message->category . ')' : '' ));
              }
          }
 

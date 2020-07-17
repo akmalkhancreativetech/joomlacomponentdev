@@ -46,7 +46,10 @@ defined('_JEXEC') or die('Restricted access');
 			JError::raiseError(500, implode('<br />', $errors));
 
 			return false;
-        }
+		}
+		
+		// Set the submenu
+		HelloWorldHelper::addSubmenu('helloworlds');
 
         // Set the toolbar and number of found items
 		$this->addToolBar();
@@ -75,9 +78,10 @@ defined('_JEXEC') or die('Restricted access');
 		}
 
         JToolBarHelper::title($title, 'helloworld');
-        JToolbarHelper::deleteList('', 'helloworlds.delete');
+        JToolbarHelper::deleteList('Are You Sure To Delete This Record?', 'helloworlds.delete');
         JToolbarHelper::editList('helloworld.edit');
-        JToolbarHelper::addNew('helloworld.add');
+		JToolbarHelper::addNew('helloworld.add');
+		JToolBarHelper::preferences('com_helloworld');
     }
 
     /**

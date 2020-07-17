@@ -7,6 +7,7 @@
 			label="COM_BANNERS_SEARCH_IN_TITLE"
 			hint="JSEARCH_FILTER"
 			class="js-stools-search-string"
+			onchange="this.form.submit();"
 		/>
 		<field
 			name="published"

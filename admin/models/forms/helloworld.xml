@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<form>
-	<fieldset>
+<form
+	addrulepath = "/administrator/components/com_helloworld/models/rules"
+>
+	<fieldset
+				name="details"
+				label="COM_HELLOWORLD_HELLOWORLD_DETAILS"
+	>
 		<field
 				name="id"
 				type="hidden"
@@ -8,11 +13,79 @@
 		<field
 				name="title"
 				type="text"
-				label="COM_HELLOWORLD_HELLOWORLD_GREETING_LABEL"
-				description="COM_HELLOWORLD_HELLOWORLD_GREETING_DESC"
-				size="40"
+				label="Title"
+				description="Title Description"
+				class="inputbox validate-title"
+				validate="title"
+				required="true"
+				default=""
+				hint="Message Title"
+				/>
+		<field
+				name="number"
+				type="number"
+				label="Number"
+				description="Number Description"
+				class="inputbox validate-numeric"
+				validate="number"
+				required="true"
+				default=""
+				hint="Number"
+				/>
+		<field
+				name="email"
+				type="email"
+				label="Email"
+				description="Email Description"
+				class="inputbox validate-email"
+				validate="email"
+				required="true"
+				default=""
+				hint="Email"
+				/>
+		<field 
+				name="date" 
+				type="calendar" 
+				label="Select a date" 
+				description=""
+				class="inputbox" 
+				required="true" 
+				filter="user_utc"
+				showtime="false" 
+				todaybutton="false" 
+				filltable="false" 
+				translateformat="true"
+				hint="Date" 
+				/>
+		<field
+				name="catid"
+				type="category"
+				extension="com_helloworld"
 				class="inputbox"
 				default=""
-				/>
+				label="Category"
+				description="Category Select"
+				required="true"
+		>
+			<option value="0">JOPTION_SELECT_CATEGORY</option>
+		</field>
 	</fieldset>
+	<fields name="params">
+		<fieldset
+				name="params"
+				label="JGLOBAL_FIELDSET_DISPLAY_OPTIONS"
+		>
+			<field
+					name="show_category"
+					type="list"
+					label="COM_HELLOWORLD_HELLOWORLD_FIELD_SHOW_CATEGORY_LABEL"
+					description="COM_HELLOWORLD_HELLOWORLD_FIELD_SHOW_CATEGORY_DESC"
+					default=""
+			>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+		</fieldset>
+	</fields>
 </form>
