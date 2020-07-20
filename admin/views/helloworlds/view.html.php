@@ -40,12 +40,13 @@ defined('_JEXEC') or die('Restricted access');
 		$this->filterForm    	= $this->get('FilterForm');
 		$this->activeFilters 	= $this->get('ActiveFilters');
 
+		// What Access Permissions does this user have? What can (s)he do?
+		$this->canDo = JHelperContent::getActions('com_helloworld');
+
         // Check for errors.
         if (count($errors = $this->get('Errors')))
 		{
-			JError::raiseError(500, implode('<br />', $errors));
-
-			return false;
+			throw new Exception(implode("\n", $errors), 500);
 		}
 		
 		// Set the submenu
@@ -77,11 +78,20 @@ defined('_JEXEC') or die('Restricted access');
 			$title .= "<span style='font-size: 0.5em; vertical-align: middle;'>(" . $this->pagination->total . ")</span>";
 		}
 
-        JToolBarHelper::title($title, 'helloworld');
-        JToolbarHelper::deleteList('Are You Sure To Delete This Record?', 'helloworlds.delete');
-        JToolbarHelper::editList('helloworld.edit');
-		JToolbarHelper::addNew('helloworld.add');
-		JToolBarHelper::preferences('com_helloworld');
+		JToolBarHelper::title($title, 'helloworld');
+		if ($this->canDo->get('core.create')) {
+			JToolbarHelper::addNew('helloworld.add', 'JTOOLBAR_NEW');
+		}
+		if ($this->canDo->get('core.edit')) {
+			JToolbarHelper::editList('helloworld.edit', 'JTOOLBAR_EDIT');
+		}
+		if ($this->canDo->get('core.delete')) {
+			JToolbarHelper::deleteList('Are You Sure To Delete This Record?', 'helloworlds.delete', 'JTOOLBAR_DELETE');
+		}
+		if ($this->canDo->get('core.admin')) {
+			JToolBarHelper::divider();
+			JToolBarHelper::preferences('com_helloworld');
+		}
     }
 
     /**

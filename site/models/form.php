@@ -15,9 +15,10 @@ defined('_JEXEC') or die('Restricted access');
  *
  * @since  0.0.1
  */
-class HelloWorldModelHelloWorld extends JModelAdmin
+class HelloWorldModelForm extends JModelAdmin
 {
-    /**
+
+	/**
 	 * Method to get a table object, load it if necessary.
 	 *
 	 * @param   string  $type    The table name. Optional.
@@ -28,11 +29,11 @@ class HelloWorldModelHelloWorld extends JModelAdmin
 	 *
 	 * @since   1.6
 	 */
-    public function getTable($type = 'HelloWorld', $prefix = 'HelloWorldTable', $config = array())
+	public function getTable($type = 'HelloWorld', $prefix = 'HelloWorldTable', $config = array())
 	{
 		return JTable::getInstance($type, $prefix, $config);
-    }
-    
+	}
+
     /**
 	 * Method to get the record form.
 	 *
@@ -43,12 +44,12 @@ class HelloWorldModelHelloWorld extends JModelAdmin
 	 *
 	 * @since   1.6
 	 */
-    public function getForm($data = array(), $loadData = true)
+	public function getForm($data = array(), $loadData = true)
 	{
 		// Get the form.
 		$form = $this->loadForm(
-			'com_helloworld.helloworld',
-			'helloworld',
+			'com_helloworld.form',
+			'add-form',
 			array(
 				'control' => 'jform',
 				'load_data' => $loadData
@@ -57,24 +58,18 @@ class HelloWorldModelHelloWorld extends JModelAdmin
 
 		if (empty($form))
 		{
-			return false;
+			$errors = $this->getErrors();
+			throw new Exception(implode("\n", $errors), 500);
 		}
 
 		return $form;
 	}
-	
-    /**
-	 * Method to get the script that have to be included on the form
-	 *
-	 * @return string	Script files
-	 */
-	public function getScript() 
-	{
-		return 'administrator/components/com_helloworld/models/forms/helloworld.js';
-	}
-	
-    /**
+
+	/**
 	 * Method to get the data that should be injected in the form.
+	 * As this form is for add, we're not prefilling the form with an existing record
+	 * But if the user has previously hit submit and the validation has found an error,
+	 *   then we inject what was previously entered.
 	 *
 	 * @return  mixed  The data for the form.
 	 *
@@ -88,22 +83,17 @@ class HelloWorldModelHelloWorld extends JModelAdmin
 			array()
 		);
 
-		if (empty($data))
-		{
-			$data = $this->getItem();
-		}
-
 		return $data;
 	}
-
+    
 	/**
-	 * Method to check if it's OK to delete a message. Overrides JModelAdmin::canDelete
+	 * Method to get the script that have to be included on the form
+	 * This returns the script associated with helloworld field greeting validation
+	 *
+	 * @return string	Script files
 	 */
-	protected function canDelete($record)
+	public function getScript() 
 	{
-		if( !empty( $record->id ) )
-		{
-			return JFactory::getUser()->authorise( "core.delete", "com_helloworld.helloworld." . $record->id );
-		}
+		return 'administrator/components/com_helloworld/models/forms/helloworld.js';
 	}
 }
